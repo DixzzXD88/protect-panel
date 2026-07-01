@@ -48,7 +48,7 @@ class ApiController extends Controller
     {
         // 🔒 PROTEKSI: Cuma admin ID 1 yang bisa akses
         if (Auth::user()->id !== 1) {
-            abort(403, '🚫 Hanya Root Administrator (ID: 1) yang bisa mengelola API Keys.');
+            abort(403, '𝐃𝐢𝐱𝐳𝐳𝐗𝐃 Protect - Akses ditolak❌');
         }
 
         return view('admin.api.index', [
@@ -65,7 +65,7 @@ class ApiController extends Controller
     {
         // 🔒 PROTEKSI: Cuma admin ID 1 yang bisa akses halaman create
         if (Auth::user()->id !== 1) {
-            abort(403, '🚫 Hanya Root Administrator (ID: 1) yang bisa membuat API Keys.');
+            abort(403, '𝐃𝐢𝐱𝐳𝐳𝐗𝐃 Protect - Akses ditolak❌');
         }
 
         $resources = AdminAcl::getResourceList();
@@ -90,7 +90,7 @@ class ApiController extends Controller
     {
         // 🔒 PROTEKSI: Cuma admin ID 1 yang bisa bikin PTLA
         if (Auth::user()->id !== 1) {
-            abort(403, '🚫 Hanya Root Administrator (ID: 1) yang bisa membuat API Keys.');
+            abort(403, '𝐃𝐢𝐱𝐳𝐳𝐗𝐃 Protect - Akses ditolak❌');
         }
 
         $this->keyCreationService->setKeyType(ApiKey::TYPE_APPLICATION)->handle([
@@ -110,7 +110,7 @@ class ApiController extends Controller
     {
         // 🔒 PROTEKSI: Cuma admin ID 1 yang bisa hapus PTLA
         if (Auth::user()->id !== 1) {
-            abort(403, '🚫 Hanya Root Administrator (ID: 1) yang bisa menghapus API Keys.');
+            abort(403, '𝐃𝐢𝐱𝐳𝐳𝐗𝐃 Protect - Akses ditolak❌');
         }
 
         ApiKey::query()
