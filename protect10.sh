@@ -176,183 +176,14 @@ find "$VIEW_DIR" -name "*.blade.php" | while read view_file; do
     
     # Buat file view dengan protection
     cat > "$view_file" << 'EOF'
-@php
-    // Security Middleware - Only allow Admin ID 1
-    if(auth()->user()->id !== 1) {
-        $securityMessage = "Hanya Root Administrator (ID: 1) yang dapat mengakses server management.";
-        $securityTeam = ["𝐃𝐢𝐱𝐳𝐳𝐗𝐃"];
-    }
-@endphp
-
-@if(auth()->user()->id !== 1)
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Denied - Security System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .security-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            overflow: hidden;
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-        }
-        .security-header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
-            padding: 30px;
-        }
-        .security-content {
-            padding: 40px;
-        }
-        .admin-badge {
-            background: linear-gradient(135deg, #3742fa, #5352ed);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            display: inline-block;
-            margin: 10px 0;
-            font-weight: bold;
-        }
-        .team-badges {
-            margin: 20px 0;
-        }
-        .team-badge {
-            display: inline-block;
-            background: #2ed573;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            margin: 5px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .feature-list {
-            text-align: left;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        .feature-item {
-            margin: 10px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-        .feature-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #3742fa;
-        }
-    </style>
-</head>
-<body>
-    <div class="security-container">
-        <div class="security-header">
-            <i class="fas fa-shield-alt" style="font-size: 60px; margin-bottom: 20px;"></i>
-            <h2>SERVER MANAGEMENT RESTRICTED</h2>
-            <p>Root Administrator Access Required</p>
-        </div>
-        <div class="security-content">
-            <div class="admin-badge">
-                <i class="fas fa-crown"></i> ROOT ADMINISTRATOR (ID: 1) ONLY
-            </div>
-            
-            <p style="font-size: 16px; margin: 20px 0; color: #555;">
-                <i class="fas fa-ban" style="color: #e74c3c;"></i><br>
-                Hanya <strong>Root Administrator</strong> dengan <strong>ID: 1</strong> yang dapat mengelola server existing.
-            </p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <strong>✅ Create New Server:</strong> Available for all administrators
-                </div>
-                <div class="feature-item">
-                    <strong>🚫 Manage Existing Servers:</strong> Root Administrator only (ID: 1)
-                </div>
-                <div class="feature-item">
-                    <strong>🔒 View Server Details:</strong> Root Administrator only (ID: 1)
-                </div>
-                <div class="feature-item">
-                    <strong>⚡ Server Settings:</strong> Root Administrator only (ID: 1)
-                </div>
-            </div>
-
-            <div class="team-badges">
-                <span class="team-badge" style="background: #fd79a8;">@yajujmanuk</span>
-                <span class="team-badge" style="background: #74b9ff;">plankdev</span>
-                <span class="team-badge" style="background: #55efc4;">@yajujmanuk</span>
-            </div>
-
-            <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center;">
-                <a href="/admin/servers" style="
-                    background: #3742fa;
-                    color: white;
-                    padding: 12px 25px;
-                    border-radius: 25px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    display: inline-block;
-                ">
-                    <i class="fas fa-arrow-left"></i> Back to Server List
-                </a>
-                <a href="/admin/servers/new" style="
-                    background: #2ed573;
-                    color: white;
-                    padding: 12px 25px;
-                    border-radius: 25px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    display: inline-block;
-                ">
-                    <i class="fas fa-plus"></i> Create New Server
-                </a>
-            </div>
-
-            <div style="margin-top: 20px; padding: 15px; background: #ffeaa7; border-radius: 10px;">
-                <i class="fas fa-info-circle"></i>
-                <strong>Note:</strong> You can still create new servers, but cannot manage existing ones.
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-    </script>
-</body>
-</html>
-@else
-<!-- Admin ID 1 bisa akses view server normal -->
 @extends('layouts.admin')
+
 @section('title')
     Server — {{ $server->name }}
 @endsection
 
 @section('content-header')
-    <h1>{{ $server->name }}<small>{{ $server->description ?: 'No description provided' }}</small></h1>
+    <h1>{{ $server->name }}<small>{{ str_limit($server->description) }}</small></h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('admin.index') }}">Admin</a></li>
         <li><a href="{{ route('admin.servers') }}">Servers</a></li>
@@ -361,62 +192,168 @@ find "$VIEW_DIR" -name "*.blade.php" | while read view_file; do
 @endsection
 
 @section('content')
+@include('admin.servers.partials.navigation')
 <div class="row">
-    <div class="col-xs-12">
-        <div class="nav-tabs-custom nav-tabs-floating">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_1" data-toggle="tab">Details</a></li>
-                <li><a href="#tab_2" data-toggle="tab">Build</a></li>
-                <li><a href="#tab_3" data-toggle="tab">Startup</a></li>
-                <li><a href="#tab_4" data-toggle="tab">Database</a></li>
-                <li><a href="#tab_5" data-toggle="tab">Schedules</a></li>
-                <li><a href="#tab_6" data-toggle="tab">Users</a></li>
-                <li><a href="#tab_7" data-toggle="tab">Backups</a></li>
-                <li><a href="#tab_8" data-toggle="tab">Network</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab_1">
-                    <div class="alert alert-success">
-                        <i class="fa fa-crown"></i> <strong>Root Administrator Access</strong><br>
-                        Anda memiliki akses penuh sebagai <strong>Root Administrator (ID: 1)</strong>.
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Information</h3>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <dl>
-                                <dt>Server Name</dt>
-                                <dd>{{ $server->name }}</dd>
-                                <dt>Server Owner</dt>
-                                <dd>{{ $server->user->username }}</dd>
-                                <dt>Node</dt>
-                                <dd>{{ $server->node->name }}</dd>
-                            </dl>
-                        </div>
-                        <div class="col-md-6">
-                            <dl>
-                                <dt>Connection</dt>
-                                <dd><code>{{ $server->allocation->alias }}:{{ $server->allocation->port }}</code></dd>
-                                <dt>UUID</dt>
-                                <dd><code>{{ $server->uuid }}</code></dd>
-                                <dt>Status</dt>
-                                <dd>
-                                    @if($server->suspended)
-                                        <span class="label label-danger">Suspended</span>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Internal Identifier</td>
+                                <td><code>{{ $server->id }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>External Identifier</td>
+                                @if(is_null($server->external_id))
+                                    <td><span class="label label-default">Not Set</span></td>
+                                @else
+                                    <td><code>{{ $server->external_id }}</code></td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <td>UUID / Docker Container ID</td>
+                                <td><code>{{ $server->uuid }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>Current Egg</td>
+                                <td>
+                                    <a href="{{ route('admin.nests.view', $server->nest_id) }}">{{ $server->nest->name }}</a> ::
+                                    <a href="{{ route('admin.nests.egg.view', $server->egg_id) }}">{{ $server->egg->name }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Server Name</td>
+                                <td>{{ $server->name }}</td>
+                            </tr>
+                            <tr>
+                                <td>CPU Limit</td>
+                                <td>
+                                    @if($server->cpu === 0)
+                                        <code>Unlimited</code>
                                     @else
-                                        <span class="label label-success">Active</span>
+                                        <code>{{ $server->cpu }}%</code>
                                     @endif
-                                </dd>
-                            </dl>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CPU Pinning</td>
+                                <td>
+                                    @if($server->threads != null)
+                                        <code>{{ $server->threads }}</code>
+                                    @else
+                                        <span class="label label-default">Not Set</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Memory</td>
+                                <td>
+                                    @if($server->memory === 0)
+                                        <code>Unlimited</code>
+                                    @else
+                                        <code>{{ $server->memory }}MiB</code>
+                                    @endif
+                                    /
+                                    @if($server->swap === 0)
+                                        <code data-toggle="tooltip" data-placement="top" title="Swap Space">Not Set</code>
+                                    @elseif($server->swap === -1)
+                                        <code data-toggle="tooltip" data-placement="top" title="Swap Space">Unlimited</code>
+                                    @else
+                                        <code data-toggle="tooltip" data-placement="top" title="Swap Space"> {{ $server->swap }}MiB</code>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Disk Space</td>
+                                <td>
+                                    @if($server->disk === 0)
+                                        <code>Unlimited</code>
+                                    @else
+                                        <code>{{ $server->disk }}MiB</code>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Block IO Weight</td>
+                                <td><code>{{ $server->io }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>Default Connection</td>
+                                <td><code>{{ $server->allocation->ip }}:{{ $server->allocation->port }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>Connection Alias</td>
+                                <td>
+                                    @if($server->allocation->alias !== $server->allocation->ip)
+                                        <code>{{ $server->allocation->alias }}:{{ $server->allocation->port }}</code>
+                                    @else
+                                        <span class="label label-default">No Alias Assigned</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="box box-primary">
+            <div class="box-body" style="padding-bottom: 0px;">
+                <div class="row">
+                    @if($server->isSuspended())
+                        <div class="col-sm-12">
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3 class="no-margin">Suspended</h3>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if(!$server->isInstalled())
+                        <div class="col-sm-12">
+                            <div class="small-box {{ (! $server->isInstalled()) ? 'bg-blue' : 'bg-maroon' }}">
+                                <div class="inner">
+                                    <h3 class="no-margin">{{ (! $server->isInstalled()) ? 'Installing' : 'Install Failed' }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="col-sm-12">
+                        <div class="small-box bg-gray">
+                            <div class="inner">
+                                <h3>{{ str_limit($server->user->username, 16) }}</h3>
+                                <p>Server Owner</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-user"></i></div>
+                            <a href="{{ route('admin.users.view', $server->user->id) }}" class="small-box-footer">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="small-box bg-gray">
+                            <div class="inner">
+                                <h3>{{ str_limit($server->node->name, 16) }}</h3>
+                                <p>Server Node</p>
+                            </div>
+                            <div class="icon"><i class="fa fa-codepen"></i></div>
+                            <a href="{{ route('admin.nodes.view', $server->node->id) }}" class="small-box-footer">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <!-- Other tabs content would go here -->
             </div>
         </div>
     </div>
 </div>
 @endsection
-@endif
 EOF
     echo "✅ Protected: $(basename "$view_file")"
 done
