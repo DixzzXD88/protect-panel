@@ -4,7 +4,7 @@ echo "========================================="
 echo "  Running all protect scripts..."
 echo "========================================="
 
-for i in {1..12}; do
+for i in {1..11}; do
     if [ -f "protect$i.sh" ]; then
         echo "▶️  Running protect$i.sh..."
         bash protect$i.sh
