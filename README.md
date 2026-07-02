@@ -47,11 +47,11 @@
 
 ```bash
 # 1. Clone repository atau upload semua file ke server
-git clone https://github.com/username/panel-protect.git
+git clone https://github.com/DixzzXD88/panel-protect.git
 cd panel-protect
 
 # 2. Berikan izin execute
 chmod +x installprotect.sh protect*.sh
 
 # 3. Jalankan installer
-./installprotect.sh
+bash installprotect.sh
